@@ -31,7 +31,7 @@ public class ColoredRedstoneWallTorchBlock extends RedstoneWallTorchBlock {
         if (base <= 0) {
             return 0;
         }
-        return ColoredSignalUtil.canPowerTarget(level, pos, direction, color) ? base : 0;
+        return ColoredSignalUtil.canPowerTarget(level, pos, direction.getOpposite(), color) ? base : 0;
     }
 
     @Override
@@ -40,7 +40,7 @@ public class ColoredRedstoneWallTorchBlock extends RedstoneWallTorchBlock {
         if (base <= 0) {
             return 0;
         }
-        return ColoredSignalUtil.canPowerTarget(level, pos, direction, color) ? base : 0;
+        return ColoredSignalUtil.canPowerTarget(level, pos, direction.getOpposite(), color) ? base : 0;
     }
 
     @Override

@@ -36,6 +36,18 @@ public final class ModItems {
             ITEMS.register(ModBlocks.stoneTorchId(color), () ->
                     new StandingAndWallBlockItem(standingTorch.get(), wallTorch.get(), new Item.Properties(), Direction.DOWN));
         }
+
+        for (Map.Entry<DyeColor, RegistrySupplier<Block>> entry : ModBlocks.COLORED_REDSTONE_REPEATERS.entrySet()) {
+            DyeColor color = entry.getKey();
+            RegistrySupplier<Block> block = entry.getValue();
+            ITEMS.register(ModBlocks.stoneRepeaterId(color), () -> new ItemNameBlockItem(block.get(), new Item.Properties()));
+        }
+
+        for (Map.Entry<DyeColor, RegistrySupplier<Block>> entry : ModBlocks.COLORED_REDSTONE_COMPARATORS.entrySet()) {
+            DyeColor color = entry.getKey();
+            RegistrySupplier<Block> block = entry.getValue();
+            ITEMS.register(ModBlocks.stoneComparatorId(color), () -> new ItemNameBlockItem(block.get(), new Item.Properties()));
+        }
     }
 
     private ModItems() {

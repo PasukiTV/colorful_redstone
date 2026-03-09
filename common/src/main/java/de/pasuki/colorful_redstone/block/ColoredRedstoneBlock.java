@@ -16,13 +16,17 @@ public class ColoredRedstoneBlock extends PoweredBlock {
         this.color = color;
     }
 
+    public DyeColor getColor() {
+        return color;
+    }
+
     @Override
     public int getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
         int base = super.getSignal(state, level, pos, direction);
         if (base <= 0) {
             return 0;
         }
-        return ColoredSignalUtil.canPowerTarget(level, pos, direction, color) ? base : 0;
+        return ColoredSignalUtil.canPowerTarget(level, pos, direction.getOpposite(), color) ? base : 0;
     }
 
     @Override
@@ -31,6 +35,7 @@ public class ColoredRedstoneBlock extends PoweredBlock {
         if (base <= 0) {
             return 0;
         }
-        return ColoredSignalUtil.canPowerTarget(level, pos, direction, color) ? base : 0;
+        return ColoredSignalUtil.canPowerTarget(level, pos, direction.getOpposite(), color) ? base : 0;
     }
 }
+

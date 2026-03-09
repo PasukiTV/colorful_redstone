@@ -6,7 +6,8 @@
   "client": [
   ],
   "mixins": [
-    "RedStoneWireBlockMixin"
+    "RedStoneWireBlockMixin",
+    "BlockEntityTypeAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

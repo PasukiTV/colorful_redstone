@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/repeater_2tick",
+  "textures": {
+    "lit": "colorful_redstone:block/greenstone_torch",
+    "particle": "colorful_redstone:block/greenstone_repeater",
+    "top": "colorful_redstone:block/greenstone_repeater_top_off",
+    "unlit": "colorful_redstone:block/greenstone_torch_off"
+  }
+}

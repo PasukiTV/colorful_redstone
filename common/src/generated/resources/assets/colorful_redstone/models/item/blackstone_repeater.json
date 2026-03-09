@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "colorful_redstone:block/blackstone_repeater"
+  }
+}

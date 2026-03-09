@@ -62,6 +62,33 @@ public class ColorfulRedstoneModelProvider implements DataProvider {
             futures.add(DataProvider.saveStable(writer, createWallTorchModel(wallTorchId, torchId), blockModels.json(wallTorchLoc)));
             futures.add(DataProvider.saveStable(writer, createWallTorchOffModel(wallTorchId, torchId), blockModels.json(ColorfulRedstone.id(wallTorchId + "_off"))));
             futures.add(DataProvider.saveStable(writer, createTorchItemModel(torchId), itemModels.json(torchLoc)));
+
+            String repeaterId = ModBlocks.stoneRepeaterId(color);
+            ResourceLocation repeaterLoc = ColorfulRedstone.id(repeaterId);
+            futures.add(DataProvider.saveStable(writer, createRepeaterBlockstate(repeaterId), blockstates.json(repeaterLoc)));
+            futures.add(DataProvider.saveStable(writer, createRepeaterModel(color, 1, false, false), blockModels.json(repeaterLoc)));
+            for (int delay = 1; delay <= 4; delay++) {
+                for (boolean locked : new boolean[]{false, true}) {
+                    for (boolean powered : new boolean[]{false, true}) {
+                        String modelId = repeaterModelId(repeaterId, delay, powered, locked);
+                        futures.add(DataProvider.saveStable(
+                                writer,
+                                createRepeaterModel(color, delay, powered, locked),
+                                blockModels.json(ColorfulRedstone.id(modelId))
+                        ));
+                    }
+                }
+            }
+            futures.add(DataProvider.saveStable(writer, createRepeaterItemModel(color), itemModels.json(repeaterLoc)));
+
+            String comparatorId = ModBlocks.stoneComparatorId(color);
+            ResourceLocation comparatorLoc = ColorfulRedstone.id(comparatorId);
+            futures.add(DataProvider.saveStable(writer, createComparatorBlockstate(comparatorId), blockstates.json(comparatorLoc)));
+            futures.add(DataProvider.saveStable(writer, createComparatorModel(color, comparatorId, false, false), blockModels.json(comparatorLoc)));
+            futures.add(DataProvider.saveStable(writer, createComparatorModel(color, comparatorId, true, false), blockModels.json(ColorfulRedstone.id(comparatorId + "_on"))));
+            futures.add(DataProvider.saveStable(writer, createComparatorModel(color, comparatorId, false, true), blockModels.json(ColorfulRedstone.id(comparatorId + "_subtract"))));
+            futures.add(DataProvider.saveStable(writer, createComparatorModel(color, comparatorId, true, true), blockModels.json(ColorfulRedstone.id(comparatorId + "_on_subtract"))));
+            futures.add(DataProvider.saveStable(writer, createComparatorItemModel(color), itemModels.json(comparatorLoc)));
         }
 
         return CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
@@ -130,6 +157,110 @@ public class ColorfulRedstoneModelProvider implements DataProvider {
         return root;
     }
 
+    private static JsonObject createRepeaterBlockstate(String repeaterId) {
+        JsonObject root = new JsonObject();
+        JsonObject variants = new JsonObject();
+
+        String[] facings = {"north", "east", "south", "west"};
+        for (String facing : facings) {
+            Integer y = rotationForFacing(facing);
+            for (int delay = 1; delay <= 4; delay++) {
+                for (boolean locked : new boolean[]{false, true}) {
+                    for (boolean powered : new boolean[]{false, true}) {
+                        String key = "delay=" + delay + ",facing=" + facing + ",locked=" + locked + ",powered=" + powered;
+                        String model = ColorfulRedstone.MOD_ID + ":block/" + repeaterModelId(repeaterId, delay, powered, locked);
+                        variants.add(key, variant(model, y));
+                    }
+                }
+            }
+        }
+
+        root.add("variants", variants);
+        return root;
+    }
+
+    private static JsonObject createComparatorBlockstate(String comparatorId) {
+        JsonObject root = new JsonObject();
+        JsonObject variants = new JsonObject();
+
+        String[] facings = {"north", "east", "south", "west"};
+        String[] modes = {"compare", "subtract"};
+        for (String facing : facings) {
+            Integer y = rotationForFacing(facing);
+            for (String mode : modes) {
+                for (boolean powered : new boolean[]{false, true}) {
+                    String key = "facing=" + facing + ",mode=" + mode + ",powered=" + powered;
+                    String model = ColorfulRedstone.MOD_ID + ":block/" + comparatorId;
+                    if (powered) {
+                        model += "_on";
+                    }
+                    if ("subtract".equals(mode)) {
+                        model += "_subtract";
+                    }
+                    variants.add(key, variant(model, y));
+                }
+            }
+        }
+
+        root.add("variants", variants);
+        return root;
+    }
+
+    private static JsonObject createRepeaterModel(DyeColor color, int delay, boolean on, boolean locked) {
+        JsonObject root = new JsonObject();
+        String parent = "minecraft:block/repeater_" + delay + "tick" + (on ? "_on" : "") + (locked ? "_locked" : "");
+        root.addProperty("parent", parent);
+
+        if (color == DyeColor.RED) {
+            return root;
+        }
+
+        String stoneName = stoneName(color);
+        JsonObject textures = new JsonObject();
+        textures.addProperty("particle", ColorfulRedstone.MOD_ID + ":block/" + stoneName + "_repeater");
+        textures.addProperty("top", ColorfulRedstone.MOD_ID + ":block/" + stoneName + "_repeater_top_" + (on ? "on" : "off"));
+        textures.addProperty("lit", ColorfulRedstone.MOD_ID + ":block/" + stoneName + "_torch");
+        textures.addProperty("unlit", ColorfulRedstone.MOD_ID + ":block/" + stoneName + "_torch_off");
+        root.add("textures", textures);
+        return root;
+    }
+
+    private static JsonObject createComparatorModel(DyeColor color, String comparatorId, boolean on, boolean subtract) {
+        JsonObject root = new JsonObject();
+        String parent = "minecraft:block/comparator" + (on ? "_on" : "") + (subtract ? "_subtract" : "");
+        root.addProperty("parent", parent);
+
+        if (color == DyeColor.RED) {
+            return root;
+        }
+
+        String stoneName = stoneName(color);
+        JsonObject textures = new JsonObject();
+        textures.addProperty("particle", ColorfulRedstone.MOD_ID + ":block/" + stoneName + "_comperator");
+        textures.addProperty("top", ColorfulRedstone.MOD_ID + ":block/" + stoneName + "_comperator_top_" + (on ? "on" : "off"));
+        textures.addProperty("lit", ColorfulRedstone.MOD_ID + ":block/" + stoneName + "_torch");
+        textures.addProperty("unlit", ColorfulRedstone.MOD_ID + ":block/" + stoneName + "_torch_off");
+        root.add("textures", textures);
+        return root;
+    }
+
+    private static String stoneName(DyeColor color) {
+        String dustId = ModBlocks.stoneDustId(color);
+        return dustId.substring(0, dustId.length() - "_dust".length());
+    }
+
+    private static String repeaterModelId(String repeaterId, int delay, boolean powered, boolean locked) {
+        return repeaterId + "_" + delay + "tick" + (powered ? "_on" : "") + (locked ? "_locked" : "");
+    }
+
+    private static Integer rotationForFacing(String facing) {
+        return switch (facing) {
+            case "east" -> 270;
+            case "north" -> 180;
+            case "west" -> 90;
+            default -> null;
+        };
+    }
     private static JsonObject createTorchModel(String torchId) {
         JsonObject root = new JsonObject();
         root.addProperty("parent", "minecraft:block/template_torch");
@@ -171,6 +302,38 @@ public class ColorfulRedstoneModelProvider implements DataProvider {
         root.addProperty("parent", "minecraft:item/generated");
         JsonObject textures = new JsonObject();
         textures.addProperty("layer0", ColorfulRedstone.MOD_ID + ":block/" + torchId);
+        root.add("textures", textures);
+        return root;
+    }
+
+    private static JsonObject createRepeaterItemModel(DyeColor color) {
+        if (color == DyeColor.RED) {
+            JsonObject root = new JsonObject();
+            root.addProperty("parent", "minecraft:item/repeater");
+            return root;
+        }
+
+        String stoneName = stoneName(color);
+        JsonObject root = new JsonObject();
+        root.addProperty("parent", "minecraft:item/generated");
+        JsonObject textures = new JsonObject();
+        textures.addProperty("layer0", ColorfulRedstone.MOD_ID + ":block/" + stoneName + "_repeater");
+        root.add("textures", textures);
+        return root;
+    }
+
+    private static JsonObject createComparatorItemModel(DyeColor color) {
+        if (color == DyeColor.RED) {
+            JsonObject root = new JsonObject();
+            root.addProperty("parent", "minecraft:item/comparator");
+            return root;
+        }
+
+        String stoneName = stoneName(color);
+        JsonObject root = new JsonObject();
+        root.addProperty("parent", "minecraft:item/generated");
+        JsonObject textures = new JsonObject();
+        textures.addProperty("layer0", ColorfulRedstone.MOD_ID + ":block/" + stoneName + "_comperator");
         root.add("textures", textures);
         return root;
     }
@@ -308,3 +471,16 @@ public class ColorfulRedstoneModelProvider implements DataProvider {
         return part;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

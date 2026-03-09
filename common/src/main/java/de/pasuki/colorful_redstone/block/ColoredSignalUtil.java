@@ -4,6 +4,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.ComparatorBlock;
+import net.minecraft.world.level.block.RedStoneWireBlock;
+import net.minecraft.world.level.block.RedstoneTorchBlock;
+import net.minecraft.world.level.block.RedstoneWallTorchBlock;
+import net.minecraft.world.level.block.RepeaterBlock;
+import net.minecraft.world.level.block.state.BlockState;
 
 final class ColoredSignalUtil {
     private ColoredSignalUtil() {
@@ -11,7 +17,37 @@ final class ColoredSignalUtil {
 
     static boolean canPowerTarget(BlockGetter level, BlockPos sourcePos, Direction direction, DyeColor color) {
         BlockPos targetPos = sourcePos.relative(direction);
-        return level.getBlockState(targetPos).getBlock() instanceof ColoredRedstoneWireBlock wire
-                && wire.getColor() == color;
+        return isSameColorComponent(level.getBlockState(targetPos), color);
+    }
+
+    static boolean isSameColorComponent(BlockState state, DyeColor color) {
+        if (state.getBlock() instanceof ColoredRedstoneWireBlock wire) {
+            return wire.getColor() == color;
+        }
+        if (state.getBlock() instanceof ColoredRedstoneTorchBlock torch) {
+            return torch.getColor() == color;
+        }
+        if (state.getBlock() instanceof ColoredRedstoneWallTorchBlock wallTorch) {
+            return wallTorch.getColor() == color;
+        }
+        if (state.getBlock() instanceof ColoredRedstoneBlock block) {
+            return block.getColor() == color;
+        }
+        if (state.getBlock() instanceof ColoredRepeaterBlock repeater) {
+            return repeater.getColor() == color;
+        }
+        if (state.getBlock() instanceof ColoredComparatorBlock comparator) {
+            return comparator.getColor() == color;
+        }
+        return false;
+    }
+
+    static boolean isAnyRedstoneComponent(BlockState state) {
+        return state.getBlock() instanceof RedStoneWireBlock
+                || state.getBlock() instanceof RedstoneTorchBlock
+                || state.getBlock() instanceof RedstoneWallTorchBlock
+                || state.getBlock() instanceof RepeaterBlock
+                || state.getBlock() instanceof ComparatorBlock
+                || state.getBlock() instanceof ColoredRedstoneBlock;
     }
 }

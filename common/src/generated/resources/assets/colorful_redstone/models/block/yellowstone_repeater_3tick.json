@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/repeater_3tick",
+  "textures": {
+    "lit": "colorful_redstone:block/yellowstone_torch",
+    "particle": "colorful_redstone:block/yellowstone_repeater",
+    "top": "colorful_redstone:block/yellowstone_repeater_top_off",
+    "unlit": "colorful_redstone:block/yellowstone_torch_off"
+  }
+}

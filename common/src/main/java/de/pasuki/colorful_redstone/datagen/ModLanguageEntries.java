@@ -55,6 +55,22 @@ public final class ModLanguageEntries {
         return DE_COLOR_NAMES.getOrDefault(color, titleCase(color.getName())) + "stein-Fackel";
     }
 
+    public static String englishRepeaterName(DyeColor color) {
+        return titleCase(color.getName()) + "stone Repeater";
+    }
+
+    public static String germanRepeaterName(DyeColor color) {
+        return DE_COLOR_NAMES.getOrDefault(color, titleCase(color.getName())) + "stein-Verstaerker";
+    }
+
+    public static String englishComparatorName(DyeColor color) {
+        return titleCase(color.getName()) + "stone Comparator";
+    }
+
+    public static String germanComparatorName(DyeColor color) {
+        return DE_COLOR_NAMES.getOrDefault(color, titleCase(color.getName())) + "stein-Komparator";
+    }
+
     private static String titleCase(String text) {
         String[] parts = text.toLowerCase(Locale.ROOT).split("_");
         StringBuilder builder = new StringBuilder();

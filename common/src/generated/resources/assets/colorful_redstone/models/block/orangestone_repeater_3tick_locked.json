@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/repeater_3tick_locked",
+  "textures": {
+    "lit": "colorful_redstone:block/orangestone_torch",
+    "particle": "colorful_redstone:block/orangestone_repeater",
+    "top": "colorful_redstone:block/orangestone_repeater_top_off",
+    "unlit": "colorful_redstone:block/orangestone_torch_off"
+  }
+}

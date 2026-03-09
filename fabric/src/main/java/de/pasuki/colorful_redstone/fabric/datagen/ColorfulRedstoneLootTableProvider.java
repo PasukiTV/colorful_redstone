@@ -31,11 +31,15 @@ public class ColorfulRedstoneLootTableProvider implements DataProvider {
             String blockId = ModBlocks.stoneBlockId(color);
             String torchId = ModBlocks.stoneTorchId(color);
             String wallTorchId = ModBlocks.stoneWallTorchId(color);
+            String repeaterId = ModBlocks.stoneRepeaterId(color);
+            String comparatorId = ModBlocks.stoneComparatorId(color);
 
             futures.add(writeSingleDropLootTable(writer, dustId, dustId));
             futures.add(writeSingleDropLootTable(writer, blockId, blockId));
             futures.add(writeSingleDropLootTable(writer, torchId, torchId));
             futures.add(writeSingleDropLootTable(writer, wallTorchId, torchId));
+            futures.add(writeSingleDropLootTable(writer, repeaterId, repeaterId));
+            futures.add(writeSingleDropLootTable(writer, comparatorId, comparatorId));
         }
 
         return CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));

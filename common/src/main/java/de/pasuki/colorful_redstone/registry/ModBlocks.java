@@ -3,10 +3,12 @@ package de.pasuki.colorful_redstone.registry;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import de.pasuki.colorful_redstone.ColorfulRedstone;
+import de.pasuki.colorful_redstone.block.ColoredComparatorBlock;
 import de.pasuki.colorful_redstone.block.ColoredRedstoneBlock;
 import de.pasuki.colorful_redstone.block.ColoredRedstoneTorchBlock;
 import de.pasuki.colorful_redstone.block.ColoredRedstoneWallTorchBlock;
 import de.pasuki.colorful_redstone.block.ColoredRedstoneWireBlock;
+import de.pasuki.colorful_redstone.block.ColoredRepeaterBlock;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
@@ -23,6 +25,8 @@ public final class ModBlocks {
     public static final Map<DyeColor, RegistrySupplier<Block>> COLORED_REDSTONE_BLOCKS = new EnumMap<>(DyeColor.class);
     public static final Map<DyeColor, RegistrySupplier<Block>> COLORED_REDSTONE_TORCHES = new EnumMap<>(DyeColor.class);
     public static final Map<DyeColor, RegistrySupplier<Block>> COLORED_REDSTONE_WALL_TORCHES = new EnumMap<>(DyeColor.class);
+    public static final Map<DyeColor, RegistrySupplier<Block>> COLORED_REDSTONE_REPEATERS = new EnumMap<>(DyeColor.class);
+    public static final Map<DyeColor, RegistrySupplier<Block>> COLORED_REDSTONE_COMPARATORS = new EnumMap<>(DyeColor.class);
 
     static {
         for (DyeColor color : DyeColor.values()) {
@@ -37,6 +41,12 @@ public final class ModBlocks {
 
             COLORED_REDSTONE_WALL_TORCHES.put(color, BLOCKS.register(stoneWallTorchId(color), () ->
                     new ColoredRedstoneWallTorchBlock(color, BlockBehaviour.Properties.ofFullCopy(Blocks.REDSTONE_WALL_TORCH))));
+
+            COLORED_REDSTONE_REPEATERS.put(color, BLOCKS.register(stoneRepeaterId(color), () ->
+                    new ColoredRepeaterBlock(color, BlockBehaviour.Properties.ofFullCopy(Blocks.REPEATER))));
+
+            COLORED_REDSTONE_COMPARATORS.put(color, BLOCKS.register(stoneComparatorId(color), () ->
+                    new ColoredComparatorBlock(color, BlockBehaviour.Properties.ofFullCopy(Blocks.COMPARATOR))));
         }
     }
 
@@ -57,6 +67,14 @@ public final class ModBlocks {
 
     public static String stoneWallTorchId(DyeColor color) {
         return color.getName().toLowerCase(Locale.ROOT) + "stone_wall_torch";
+    }
+
+    public static String stoneRepeaterId(DyeColor color) {
+        return color.getName().toLowerCase(Locale.ROOT) + "stone_repeater";
+    }
+
+    public static String stoneComparatorId(DyeColor color) {
+        return color.getName().toLowerCase(Locale.ROOT) + "stone_comparator";
     }
 
     public static void register() {

@@ -1,5 +1,6 @@
 package de.pasuki.colorful_redstone.fabric.datagen;
 
+import com.google.gson.JsonObject;
 import de.pasuki.colorful_redstone.datagen.ModLanguageEntries;
 import de.pasuki.colorful_redstone.registry.ModBlocks;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
@@ -8,8 +9,6 @@ import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
-
-import com.google.gson.JsonObject;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -39,6 +38,16 @@ public class ColorfulRedstoneLanguageProvider implements DataProvider {
             String torchName = ModLanguageEntries.englishTorchName(color);
             lang.addProperty("block.colorful_redstone." + torchId, torchName);
             lang.addProperty("item.colorful_redstone." + torchId, torchName);
+
+            String repeaterId = ModBlocks.stoneRepeaterId(color);
+            String repeaterName = ModLanguageEntries.englishRepeaterName(color);
+            lang.addProperty("block.colorful_redstone." + repeaterId, repeaterName);
+            lang.addProperty("item.colorful_redstone." + repeaterId, repeaterName);
+
+            String comparatorId = ModBlocks.stoneComparatorId(color);
+            String comparatorName = ModLanguageEntries.englishComparatorName(color);
+            lang.addProperty("block.colorful_redstone." + comparatorId, comparatorName);
+            lang.addProperty("item.colorful_redstone." + comparatorId, comparatorName);
         }
 
         ResourceLocation id = ResourceLocation.fromNamespaceAndPath("colorful_redstone", "en_us");

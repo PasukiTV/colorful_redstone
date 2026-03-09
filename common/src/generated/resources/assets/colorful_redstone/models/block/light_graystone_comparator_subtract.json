@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/comparator_subtract",
+  "textures": {
+    "lit": "colorful_redstone:block/light_graystone_torch",
+    "particle": "colorful_redstone:block/light_graystone_comperator",
+    "top": "colorful_redstone:block/light_graystone_comperator_top_off",
+    "unlit": "colorful_redstone:block/light_graystone_torch_off"
+  }
+}

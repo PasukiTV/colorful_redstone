@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/comparator_on",
+  "textures": {
+    "lit": "colorful_redstone:block/magentastone_torch",
+    "particle": "colorful_redstone:block/magentastone_comperator",
+    "top": "colorful_redstone:block/magentastone_comperator_top_on",
+    "unlit": "colorful_redstone:block/magentastone_torch_off"
+  }
+}

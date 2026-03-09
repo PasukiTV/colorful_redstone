@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/repeater_2tick_on",
+  "textures": {
+    "lit": "colorful_redstone:block/pinkstone_torch",
+    "particle": "colorful_redstone:block/pinkstone_repeater",
+    "top": "colorful_redstone:block/pinkstone_repeater_top_on",
+    "unlit": "colorful_redstone:block/pinkstone_torch_off"
+  }
+}
