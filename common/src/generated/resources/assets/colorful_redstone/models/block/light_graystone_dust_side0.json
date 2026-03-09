@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/redstone_dust_side0",
+  "textures": {
+    "line": "colorful_redstone:block/light_graystone_dust_line0"
+  }
+}

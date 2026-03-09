@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/redstone_dust_dot",
+  "textures": {
+    "line": "colorful_redstone:block/graystone_dust_dot",
+    "overlay": "colorful_redstone:block/graystone_dust_overlay",
+    "particle": "colorful_redstone:block/graystone_dust_dot"
+  }
+}

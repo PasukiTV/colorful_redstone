@@ -1,38 +1,41 @@
 {
-  "schemaVersion": 1,
-  "id": "colorful_redstone",
-  "version": "${version}",
-  "name": "colorful_redstone",
-  "description": "This is an example description! Tell everyone what your mod is about!",
-  "authors": [
-    "Me!"
-  ],
-  "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
-  },
-  "license": "CC0-1.0",
-  "icon": "assets/colorful_redstone/icon.png",
-  "environment": "*",
-  "entrypoints": {
-    "main": [
-      "de.pasuki.colorful_redstone.fabric.ColorfulRedstoneFabric"
-    ],
-    "client": [
-      "de.pasuki.colorful_redstone.fabric.client.ColorfulRedstoneFabricClient"
-    ]
-  },
-  "mixins": [
-    "colorful_redstone.mixins.json"
-  ],
-  "depends": {
-    "fabricloader": ">=0.18.4",
-    "minecraft": "~1.21.1",
-    "java": ">=21",
-    "architectury": ">=13.0.8",
-    "fabric-api": "*"
-  },
-  "suggests": {
-    "another-mod": "*"
-  }
+    "schemaVersion":  1,
+    "id":  "colorful_redstone",
+    "version":  "${version}",
+    "name":  "colorful_redstone",
+    "description":  "This is an example description! Tell everyone what your mod is about!",
+    "authors":  [
+                    "Me!"
+                ],
+    "contact":  {
+                    "homepage":  "https://fabricmc.net/",
+                    "sources":  "https://github.com/FabricMC/fabric-example-mod"
+                },
+    "license":  "CC0-1.0",
+    "icon":  "assets/colorful_redstone/icon.png",
+    "environment":  "*",
+    "entrypoints":  {
+                        "main":  [
+                                     "de.pasuki.colorful_redstone.fabric.ColorfulRedstoneFabric"
+                                 ],
+                        "client":  [
+                                       "de.pasuki.colorful_redstone.fabric.client.ColorfulRedstoneFabricClient"
+                                   ],
+                        "fabric-datagen":  [
+                                               "de.pasuki.colorful_redstone.fabric.datagen.ColorfulRedstoneDataGenerator"
+                                           ]
+                    },
+    "mixins":  [
+                   "colorful_redstone.mixins.json"
+               ],
+    "depends":  {
+                    "fabricloader":  "\u003e=0.18.4",
+                    "minecraft":  "~1.21.1",
+                    "java":  "\u003e=21",
+                    "architectury":  "\u003e=13.0.8",
+                    "fabric-api":  "*"
+                },
+    "suggests":  {
+                     "another-mod":  "*"
+                 }
 }

@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/redstone_dust_up",
+  "textures": {
+    "line": "colorful_redstone:block/pinkstone_dust_line0",
+    "overlay": "colorful_redstone:block/pinkstone_dust_overlay",
+    "particle": "colorful_redstone:block/pinkstone_dust_dot"
+  }
+}

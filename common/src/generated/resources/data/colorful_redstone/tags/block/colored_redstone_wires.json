@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "values": [
+    "colorful_redstone:whitestone_dust",
+    "colorful_redstone:orangestone_dust",
+    "colorful_redstone:magentastone_dust",
+    "colorful_redstone:light_bluestone_dust",
+    "colorful_redstone:yellowstone_dust",
+    "colorful_redstone:limestone_dust",
+    "colorful_redstone:pinkstone_dust",
+    "colorful_redstone:graystone_dust",
+    "colorful_redstone:light_graystone_dust",
+    "colorful_redstone:cyanstone_dust",
+    "colorful_redstone:purplestone_dust",
+    "colorful_redstone:bluestone_dust",
+    "colorful_redstone:brownstone_dust",
+    "colorful_redstone:greenstone_dust",
+    "colorful_redstone:redstone_dust",
+    "colorful_redstone:blackstone_dust"
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "colorful_redstone:item/blackstone_dust"
+  }
+}

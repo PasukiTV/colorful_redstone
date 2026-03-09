@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "lit=false": {
+      "model": "colorful_redstone:block/light_bluestone_torch_off"
+    },
+    "lit=true": {
+      "model": "colorful_redstone:block/light_bluestone_torch"
+    }
+  }
+}

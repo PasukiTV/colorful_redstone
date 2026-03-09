@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "lit=false": {
+      "model": "colorful_redstone:block/pinkstone_torch_off"
+    },
+    "lit=true": {
+      "model": "colorful_redstone:block/pinkstone_torch"
+    }
+  }
+}

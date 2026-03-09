@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "redstone",
+  "ingredients": [
+    {
+      "item": "colorful_redstone:bluestone_block"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "colorful_redstone:bluestone_dust"
+  }
+}
