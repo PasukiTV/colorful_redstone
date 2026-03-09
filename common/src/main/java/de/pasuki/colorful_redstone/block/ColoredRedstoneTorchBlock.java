@@ -1,10 +1,12 @@
 package de.pasuki.colorful_redstone.block;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.util.FastColor;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RedstoneTorchBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -17,6 +19,28 @@ public class ColoredRedstoneTorchBlock extends RedstoneTorchBlock {
     public ColoredRedstoneTorchBlock(DyeColor color, BlockBehaviour.Properties properties) {
         super(properties);
         this.color = color;
+    }
+
+    public DyeColor getColor() {
+        return color;
+    }
+
+    @Override
+    public int getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+        int base = super.getSignal(state, level, pos, direction);
+        if (base <= 0) {
+            return 0;
+        }
+        return ColoredSignalUtil.canPowerTarget(level, pos, direction, color) ? base : 0;
+    }
+
+    @Override
+    public int getDirectSignal(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+        int base = super.getDirectSignal(state, level, pos, direction);
+        if (base <= 0) {
+            return 0;
+        }
+        return ColoredSignalUtil.canPowerTarget(level, pos, direction, color) ? base : 0;
     }
 
     @Override

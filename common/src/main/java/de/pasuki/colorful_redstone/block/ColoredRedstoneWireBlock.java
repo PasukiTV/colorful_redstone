@@ -26,12 +26,8 @@ public class ColoredRedstoneWireBlock extends RedStoneWireBlock {
     }
 
     public int getRenderColor(int power) {
-        if (power <= 0) {
-            return FastColor.ARGB32.color(255, 18, 18, 18);
-        }
-
-        float strength = power / 15.0F;
-        float brightness = 0.35F + (0.65F * strength);
+        float strength = Math.max(0.0F, power / 15.0F);
+        float brightness = 0.45F + (0.55F * strength);
 
         int rgb = color.getTextColor();
         int red = (int) (((rgb >> 16) & 255) * brightness);
@@ -43,10 +39,6 @@ public class ColoredRedstoneWireBlock extends RedStoneWireBlock {
         blue = Math.min(255, Math.max(0, blue));
 
         return FastColor.ARGB32.color(255, red, green, blue);
-    }
-
-    public int getItemRenderColor() {
-        return getRenderColor(15);
     }
 
     @Override
