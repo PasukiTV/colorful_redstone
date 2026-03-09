@@ -1,0 +1,38 @@
+# Gradle caches and build outputs
+.gradle/
+**/build/
+out/
+bin/
+
+# IDE metadata (local machine specific)
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+.classpath
+.project
+.settings/
+.factorypath
+
+# Runtime and game artifacts
+run/
+runs/
+logs/
+crash-reports/
+*.log
+*.hprof
+hs_err_pid*
+replay_pid*
+
+# Local environment / secrets
+.env
+.env.*
+local.properties
+*.keystore
+*.jks
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+Desktop.ini
