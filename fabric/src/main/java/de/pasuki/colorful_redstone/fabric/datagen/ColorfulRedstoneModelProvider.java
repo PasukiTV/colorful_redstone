@@ -30,7 +30,7 @@ public class ColorfulRedstoneModelProvider implements DataProvider {
     public CompletableFuture<?> run(CachedOutput writer) {
         List<CompletableFuture<?>> futures = new ArrayList<>();
 
-        for (DyeColor color : DyeColor.values()) {
+        for (DyeColor color : ModBlocks.supportedColors()) {
             String dustId = ModBlocks.stoneDustId(color);
             ResourceLocation dustLocation = ColorfulRedstone.id(dustId);
 
@@ -471,6 +471,7 @@ public class ColorfulRedstoneModelProvider implements DataProvider {
         return part;
     }
 }
+
 
 
 

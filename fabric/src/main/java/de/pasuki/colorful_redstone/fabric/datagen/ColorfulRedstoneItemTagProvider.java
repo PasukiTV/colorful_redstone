@@ -25,7 +25,7 @@ public class ColorfulRedstoneItemTagProvider implements DataProvider {
         root.addProperty("replace", false);
 
         JsonArray values = new JsonArray();
-        for (DyeColor color : DyeColor.values()) {
+        for (DyeColor color : ModBlocks.supportedColors()) {
             values.add(ColorfulRedstone.MOD_ID + ":" + ModBlocks.stoneDustId(color));
         }
         root.add("values", values);
@@ -38,3 +38,4 @@ public class ColorfulRedstoneItemTagProvider implements DataProvider {
         return "Colorful Redstone Item Tags";
     }
 }
+

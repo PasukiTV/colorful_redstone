@@ -26,7 +26,7 @@ public class ColorfulRedstoneLootTableProvider implements DataProvider {
     public CompletableFuture<?> run(CachedOutput writer) {
         List<CompletableFuture<?>> futures = new ArrayList<>();
 
-        for (DyeColor color : DyeColor.values()) {
+        for (DyeColor color : ModBlocks.supportedColors()) {
             String dustId = ModBlocks.stoneDustId(color);
             String blockId = ModBlocks.stoneBlockId(color);
             String torchId = ModBlocks.stoneTorchId(color);
@@ -81,3 +81,4 @@ public class ColorfulRedstoneLootTableProvider implements DataProvider {
         return DataProvider.saveStable(writer, root, lootTables.json(blockLoc));
     }
 }
+

@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
+import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.Locale;
 import java.util.Map;
@@ -28,8 +29,12 @@ public final class ModBlocks {
     public static final Map<DyeColor, RegistrySupplier<Block>> COLORED_REDSTONE_REPEATERS = new EnumMap<>(DyeColor.class);
     public static final Map<DyeColor, RegistrySupplier<Block>> COLORED_REDSTONE_COMPARATORS = new EnumMap<>(DyeColor.class);
 
+    private static final DyeColor[] SUPPORTED_COLORS = Arrays.stream(DyeColor.values())
+            .filter(color -> color != DyeColor.RED)
+            .toArray(DyeColor[]::new);
+
     static {
-        for (DyeColor color : DyeColor.values()) {
+        for (DyeColor color : SUPPORTED_COLORS) {
             COLORED_REDSTONE_WIRES.put(color, BLOCKS.register(stoneDustId(color), () ->
                     new ColoredRedstoneWireBlock(color, BlockBehaviour.Properties.ofFullCopy(Blocks.REDSTONE_WIRE))));
 
@@ -51,6 +56,10 @@ public final class ModBlocks {
     }
 
     private ModBlocks() {
+    }
+
+    public static DyeColor[] supportedColors() {
+        return SUPPORTED_COLORS;
     }
 
     public static String stoneDustId(DyeColor color) {

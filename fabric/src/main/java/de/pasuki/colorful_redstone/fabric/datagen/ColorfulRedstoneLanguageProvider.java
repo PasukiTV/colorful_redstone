@@ -23,7 +23,7 @@ public class ColorfulRedstoneLanguageProvider implements DataProvider {
     public CompletableFuture<?> run(CachedOutput writer) {
         JsonObject lang = new JsonObject();
 
-        for (DyeColor color : DyeColor.values()) {
+        for (DyeColor color : ModBlocks.supportedColors()) {
             String dustId = ModBlocks.stoneDustId(color);
             String dustName = ModLanguageEntries.englishDustName(color);
             lang.addProperty("block.colorful_redstone." + dustId, dustName);
@@ -59,3 +59,4 @@ public class ColorfulRedstoneLanguageProvider implements DataProvider {
         return "Colorful Redstone EN Lang";
     }
 }
+

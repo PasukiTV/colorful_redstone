@@ -24,7 +24,7 @@ public class ColorfulRedstoneBlockTagProvider implements DataProvider {
         root.addProperty("replace", false);
 
         JsonArray values = new JsonArray();
-        for (var color : net.minecraft.world.item.DyeColor.values()) {
+        for (var color : ModBlocks.supportedColors()) {
             values.add(ColorfulRedstone.MOD_ID + ":" + ModBlocks.stoneDustId(color));
         }
         root.add("values", values);
@@ -37,3 +37,4 @@ public class ColorfulRedstoneBlockTagProvider implements DataProvider {
         return "Colorful Redstone Block Tags";
     }
 }
+

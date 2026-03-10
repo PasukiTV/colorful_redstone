@@ -40,7 +40,7 @@ public final class ModLanguageEntries {
     }
 
     public static String englishBlockName(DyeColor color) {
-        return titleCase(color.getName()) + "stone Block";
+        return "Block of " + titleCase(color.getName()) + "stone";
     }
 
     public static String germanBlockName(DyeColor color) {
@@ -91,3 +91,4 @@ public final class ModLanguageEntries {
         return builder.toString();
     }
 }
+
