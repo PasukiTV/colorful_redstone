@@ -2,6 +2,7 @@ package de.pasuki.colorful_redstone.fabric.datagen;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import de.pasuki.colorful_redstone.ColorfulRedstone;
 import de.pasuki.colorful_redstone.registry.ModBlocks;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
@@ -10,6 +11,12 @@ import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +73,6 @@ public class ColorfulRedstoneModelProvider implements DataProvider {
             String repeaterId = ModBlocks.stoneRepeaterId(color);
             ResourceLocation repeaterLoc = ColorfulRedstone.id(repeaterId);
             futures.add(DataProvider.saveStable(writer, createRepeaterBlockstate(repeaterId), blockstates.json(repeaterLoc)));
-            futures.add(DataProvider.saveStable(writer, createRepeaterModel(color, 1, false, false), blockModels.json(repeaterLoc)));
             for (int delay = 1; delay <= 4; delay++) {
                 for (boolean locked : new boolean[]{false, true}) {
                     for (boolean powered : new boolean[]{false, true}) {
@@ -207,43 +213,52 @@ public class ColorfulRedstoneModelProvider implements DataProvider {
     }
 
     private static JsonObject createRepeaterModel(DyeColor color, int delay, boolean on, boolean locked) {
-        JsonObject root = new JsonObject();
-        String parent = "minecraft:block/repeater_" + delay + "tick" + (on ? "_on" : "") + (locked ? "_locked" : "");
-        root.addProperty("parent", parent);
-
-        if (color == DyeColor.RED) {
-            return root;
-        }
+        String templateName = "repeater_" + delay + "tick" + (on ? "_on" : "") + (locked ? "_locked" : "");
+        JsonObject root = loadExampleBlockModel(templateName);
 
         String stoneName = stoneName(color);
-        JsonObject textures = new JsonObject();
+        JsonObject textures = root.getAsJsonObject("textures");
         textures.addProperty("particle", ColorfulRedstone.MOD_ID + ":block/" + stoneName + "_repeater");
         textures.addProperty("top", ColorfulRedstone.MOD_ID + ":block/" + stoneName + "_repeater_top_" + (on ? "on" : "off"));
-        textures.addProperty("lit", ColorfulRedstone.MOD_ID + ":block/" + stoneName + "_torch");
-        textures.addProperty("unlit", ColorfulRedstone.MOD_ID + ":block/" + stoneName + "_torch_off");
-        root.add("textures", textures);
+        if (textures.has("lit")) {
+            textures.addProperty("lit", ColorfulRedstone.MOD_ID + ":block/" + stoneName + "_torch");
+        }
+        if (textures.has("unlit")) {
+            textures.addProperty("unlit", ColorfulRedstone.MOD_ID + ":block/" + stoneName + "_torch_off");
+        }
         return root;
     }
 
     private static JsonObject createComparatorModel(DyeColor color, String comparatorId, boolean on, boolean subtract) {
-        JsonObject root = new JsonObject();
-        String parent = "minecraft:block/comparator" + (on ? "_on" : "") + (subtract ? "_subtract" : "");
-        root.addProperty("parent", parent);
-
-        if (color == DyeColor.RED) {
-            return root;
-        }
+        String templateName = "comparator" + (on ? "_on" : "") + (subtract ? "_subtract" : "");
+        JsonObject root = loadExampleBlockModel(templateName);
 
         String stoneName = stoneName(color);
-        JsonObject textures = new JsonObject();
+        JsonObject textures = root.getAsJsonObject("textures");
         textures.addProperty("particle", ColorfulRedstone.MOD_ID + ":block/" + stoneName + "_comperator");
         textures.addProperty("top", ColorfulRedstone.MOD_ID + ":block/" + stoneName + "_comperator_top_" + (on ? "on" : "off"));
-        textures.addProperty("lit", ColorfulRedstone.MOD_ID + ":block/" + stoneName + "_torch");
-        textures.addProperty("unlit", ColorfulRedstone.MOD_ID + ":block/" + stoneName + "_torch_off");
-        root.add("textures", textures);
+        if (textures.has("lit")) {
+            textures.addProperty("lit", ColorfulRedstone.MOD_ID + ":block/" + stoneName + "_torch");
+        }
+        if (textures.has("unlit")) {
+            textures.addProperty("unlit", ColorfulRedstone.MOD_ID + ":block/" + stoneName + "_torch_off");
+        }
         return root;
     }
 
+    private static JsonObject loadExampleBlockModel(String modelName) {
+        String resourcePath = "/example/models/block/" + modelName + ".json";
+        try (InputStream in = ColorfulRedstoneModelProvider.class.getResourceAsStream(resourcePath)) {
+            if (in == null) {
+                throw new IllegalStateException("Missing example model resource: " + resourcePath);
+            }
+            try (Reader reader = new InputStreamReader(in, StandardCharsets.UTF_8)) {
+                return JsonParser.parseReader(reader).getAsJsonObject();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load example model resource: " + resourcePath, e);
+        }
+    }
     private static String stoneName(DyeColor color) {
         String dustId = ModBlocks.stoneDustId(color);
         return dustId.substring(0, dustId.length() - "_dust".length());
@@ -471,6 +486,14 @@ public class ColorfulRedstoneModelProvider implements DataProvider {
         return part;
     }
 }
+
+
+
+
+
+
+
+
 
 
 

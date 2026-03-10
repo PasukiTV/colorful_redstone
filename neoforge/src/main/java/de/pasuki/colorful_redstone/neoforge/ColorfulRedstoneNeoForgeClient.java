@@ -27,6 +27,10 @@ public final class ColorfulRedstoneNeoForgeClient {
                     .forEach(block -> ItemBlockRenderTypes.setRenderLayer(block.get(), RenderType.cutout()));
             ModBlocks.COLORED_REDSTONE_WALL_TORCHES.values()
                     .forEach(block -> ItemBlockRenderTypes.setRenderLayer(block.get(), RenderType.cutout()));
+            ModBlocks.COLORED_REDSTONE_REPEATERS.values()
+                    .forEach(block -> ItemBlockRenderTypes.setRenderLayer(block.get(), RenderType.cutout()));
+            ModBlocks.COLORED_REDSTONE_COMPARATORS.values()
+                    .forEach(block -> ItemBlockRenderTypes.setRenderLayer(block.get(), RenderType.cutout()));
         });
     }
 

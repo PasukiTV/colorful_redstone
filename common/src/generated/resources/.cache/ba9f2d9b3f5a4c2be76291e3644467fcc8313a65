@@ -1,4 +1,4 @@
-// 1.21.1	2026-03-10T11:31:44.7056692	colorful_redstone/Colorful Redstone Loot Tables
+// 1.21.1	2026-03-10T15:17:14.1596995	colorful_redstone/Colorful Redstone Loot Tables
 f1f09ccdb8c999922e6fd6501ee47992e366bff8 data\colorful_redstone\loot_table\blocks\whitestone_comparator.json
 04512eef28d2f2ed8e7a06b51c6e57577d919eaa data\colorful_redstone\loot_table\blocks\pinkstone_torch.json
 6945864335eac3bed0da53f1b9f792f6e060080c data\colorful_redstone\loot_table\blocks\light_graystone_dust.json
@@ -11,8 +11,8 @@ cb8d1075d0c231ec71bd4a82b33fb0bdc6398772 data\colorful_redstone\loot_table\block
 ceb65532aeb4bb974cd7b06373e8b58919738fc5 data\colorful_redstone\loot_table\blocks\purplestone_block.json
 7bcb1fa597d6b322952e59ccfa9350a87e252fc1 data\colorful_redstone\loot_table\blocks\bluestone_repeater.json
 e1caaffadeb35bfbf72cbd167e90a820f8ee33f5 data\colorful_redstone\loot_table\blocks\whitestone_dust.json
-03b51aad5ddbac9a406969320fce010123ad7e3f data\colorful_redstone\loot_table\blocks\magentastone_repeater.json
 1f794d31e7b2179e688845b63c60362ee7d9f49d data\colorful_redstone\loot_table\blocks\magentastone_dust.json
+03b51aad5ddbac9a406969320fce010123ad7e3f data\colorful_redstone\loot_table\blocks\magentastone_repeater.json
 9d501c35c9ebc60641f02672e53aa7e85e71b8c9 data\colorful_redstone\loot_table\blocks\light_graystone_wall_torch.json
 c80ad3c2ea9a4315c69f2d2b2dc1fbf447795370 data\colorful_redstone\loot_table\blocks\limestone_torch.json
 3405dbcdb205dce480007d0231021ef49b14728e data\colorful_redstone\loot_table\blocks\orangestone_comparator.json

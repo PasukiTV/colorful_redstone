@@ -1,9 +1,0 @@
-{
-  "parent": "minecraft:block/repeater_1tick",
-  "textures": {
-    "lit": "colorful_redstone:block/magentastone_torch",
-    "particle": "colorful_redstone:block/magentastone_repeater",
-    "top": "colorful_redstone:block/magentastone_repeater_top_off",
-    "unlit": "colorful_redstone:block/magentastone_torch_off"
-  }
-}

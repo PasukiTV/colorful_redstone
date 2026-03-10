@@ -22,10 +22,18 @@ public final class ColorfulRedstoneFabricClient implements ClientModInitializer 
         Block[] coloredWallTorchBlocks = ModBlocks.COLORED_REDSTONE_WALL_TORCHES.values().stream()
                 .map(supplier -> (Block) supplier.get())
                 .toArray(Block[]::new);
+        Block[] coloredRepeaterBlocks = ModBlocks.COLORED_REDSTONE_REPEATERS.values().stream()
+                .map(supplier -> (Block) supplier.get())
+                .toArray(Block[]::new);
+        Block[] coloredComparatorBlocks = ModBlocks.COLORED_REDSTONE_COMPARATORS.values().stream()
+                .map(supplier -> (Block) supplier.get())
+                .toArray(Block[]::new);
 
         BlockRenderLayerMap.INSTANCE.putBlocks(RenderType.cutout(), coloredWireBlocks);
         BlockRenderLayerMap.INSTANCE.putBlocks(RenderType.cutout(), coloredTorchBlocks);
         BlockRenderLayerMap.INSTANCE.putBlocks(RenderType.cutout(), coloredWallTorchBlocks);
+        BlockRenderLayerMap.INSTANCE.putBlocks(RenderType.cutout(), coloredRepeaterBlocks);
+        BlockRenderLayerMap.INSTANCE.putBlocks(RenderType.cutout(), coloredComparatorBlocks);
 
         ColorProviderRegistry.BLOCK.register((BlockState state, net.minecraft.world.level.BlockAndTintGetter level, net.minecraft.core.BlockPos pos, int tintIndex) -> {
             if (tintIndex != 0 || !(state.getBlock() instanceof ColoredRedstoneWireBlock coloredWire)) {
