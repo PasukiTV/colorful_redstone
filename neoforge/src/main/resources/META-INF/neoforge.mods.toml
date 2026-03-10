@@ -1,15 +1,15 @@
 modLoader = "javafml"
 loaderVersion = "[4,)"
 #issueTrackerURL = ""
-license = "Insert License Here"
+license = "CC0-1.0"
 
 [[mods]]
 modId = "colorful_redstone"
 version = "${version}"
 displayName = "Colorful Redstone"
-authors = "Me!"
+authors = "Pasuki"
 description = '''
-This is an example description! Tell everyone what your mod is about!
+Adds colored redstone dust, blocks, torches, repeaters, and comparators.
 '''
 #logoFile = ""
 
@@ -36,4 +36,3 @@ side = "BOTH"
 
 [[mixins]]
 config = "colorful_redstone.mixins.json"
-

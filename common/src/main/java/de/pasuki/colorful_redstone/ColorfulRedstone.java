@@ -4,6 +4,7 @@ import de.pasuki.colorful_redstone.registry.ModBlockEntityCompat;
 import de.pasuki.colorful_redstone.registry.ModBlocks;
 import de.pasuki.colorful_redstone.registry.ModCreativeTabs;
 import de.pasuki.colorful_redstone.registry.ModItems;
+import dev.architectury.event.events.common.LifecycleEvent;
 import net.minecraft.resources.ResourceLocation;
 
 public final class ColorfulRedstone {
@@ -18,8 +19,12 @@ public final class ColorfulRedstone {
 
     public static void init() {
         ModBlocks.register();
-        ModBlockEntityCompat.register();
         ModItems.register();
-        ModCreativeTabs.register();
+
+        // Run registry-dependent hooks after all registries are ready.
+        LifecycleEvent.SETUP.register(() -> {
+            ModBlockEntityCompat.register();
+            ModCreativeTabs.register();
+        });
     }
 }

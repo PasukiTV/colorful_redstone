@@ -36,3 +36,6 @@ local.properties
 .DS_Store
 Thumbs.db
 Desktop.ini
+# Datagen cache (deterministic noise)
+common/src/generated/resources/.cache/
+
