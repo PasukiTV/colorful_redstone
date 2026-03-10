@@ -1,16 +1,21 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "minecraft:crafting_shaped",
   "category": "redstone",
-  "ingredients": [
-    {
+  "key": {
+    "R": {
       "item": "minecraft:redstone"
     },
-    {
+    "X": {
       "item": "minecraft:yellow_dye"
     }
+  },
+  "pattern": [
+    "RRR",
+    "RXR",
+    "RRR"
   ],
   "result": {
-    "count": 1,
+    "count": 8,
     "id": "colorful_redstone:yellowstone_dust"
   }
 }

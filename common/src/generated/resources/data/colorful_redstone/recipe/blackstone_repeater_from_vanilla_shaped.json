@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "S": {
+      "item": "minecraft:stone"
+    },
+    "T": {
+      "item": "colorful_redstone:blackstone_torch"
+    }
+  },
+  "pattern": [
+    "   ",
+    "TRT",
+    "SSS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "colorful_redstone:blackstone_repeater"
+  }
+}

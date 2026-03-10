@@ -18,10 +18,20 @@ public class ColoredRedstoneWireBlock extends RedStoneWireBlock {
     private static final float SIDE_PARTICLE_CHANCE = 0.1F;
 
     private final DyeColor color;
+    private final int[] renderColors = new int[16];
+    private final DustParticleOptions[] particles = new DustParticleOptions[16];
 
     public ColoredRedstoneWireBlock(DyeColor color, BlockBehaviour.Properties properties) {
         super(properties);
         this.color = color;
+        for (int power = 0; power <= 15; power++) {
+            int rgb = computeRenderColor(color, power);
+            renderColors[power] = rgb;
+            float red = ((rgb >> 16) & 255) / 255.0F;
+            float green = ((rgb >> 8) & 255) / 255.0F;
+            float blue = (rgb & 255) / 255.0F;
+            particles[power] = new DustParticleOptions(new Vector3f(red, green, blue), 1.0F);
+        }
     }
 
     public DyeColor getColor() {
@@ -29,19 +39,8 @@ public class ColoredRedstoneWireBlock extends RedStoneWireBlock {
     }
 
     public int getRenderColor(int power) {
-        float strength = Math.max(0.0F, power / 15.0F);
-        float brightness = 0.45F + (0.55F * strength);
-
-        int rgb = color.getTextColor();
-        int red = (int) (((rgb >> 16) & 255) * brightness);
-        int green = (int) (((rgb >> 8) & 255) * brightness);
-        int blue = (int) ((rgb & 255) * brightness);
-
-        red = Math.min(255, Math.max(0, red));
-        green = Math.min(255, Math.max(0, green));
-        blue = Math.min(255, Math.max(0, blue));
-
-        return FastColor.ARGB32.color(255, red, green, blue);
+        int clampedPower = Math.max(0, Math.min(15, power));
+        return renderColors[clampedPower];
     }
 
     @Override
@@ -51,11 +50,7 @@ public class ColoredRedstoneWireBlock extends RedStoneWireBlock {
             return;
         }
 
-        int rgb = getRenderColor(power);
-        float red = ((rgb >> 16) & 255) / 255.0F;
-        float green = ((rgb >> 8) & 255) / 255.0F;
-        float blue = (rgb & 255) / 255.0F;
-        DustParticleOptions particle = new DustParticleOptions(new Vector3f(red, green, blue), 1.0F);
+        DustParticleOptions particle = particles[power];
 
         double centerX = pos.getX() + 0.5D;
         double centerY = pos.getY() + 0.0625D;
@@ -82,5 +77,21 @@ public class ColoredRedstoneWireBlock extends RedStoneWireBlock {
 
             level.addParticle(particle, x, y, z, 0.0D, 0.0D, 0.0D);
         }
+    }
+
+    private static int computeRenderColor(DyeColor color, int power) {
+        float strength = Math.max(0.0F, power / 15.0F);
+        float brightness = 0.45F + (0.55F * strength);
+
+        int rgb = color.getTextColor();
+        int red = (int) (((rgb >> 16) & 255) * brightness);
+        int green = (int) (((rgb >> 8) & 255) * brightness);
+        int blue = (int) ((rgb & 255) * brightness);
+
+        red = Math.min(255, Math.max(0, red));
+        green = Math.min(255, Math.max(0, green));
+        blue = Math.min(255, Math.max(0, blue));
+
+        return FastColor.ARGB32.color(255, red, green, blue);
     }
 }

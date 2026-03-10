@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "Q": {
+      "item": "minecraft:quartz"
+    },
+    "S": {
+      "item": "minecraft:stone"
+    },
+    "T": {
+      "item": "colorful_redstone:graystone_torch"
+    }
+  },
+  "pattern": [
+    " T ",
+    "TQT",
+    "SSS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "colorful_redstone:graystone_comparator"
+  }
+}

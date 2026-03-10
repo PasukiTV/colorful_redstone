@@ -33,11 +33,12 @@ public class ColorfulRedstoneRecipeProvider implements DataProvider {
             String comparatorId = ModBlocks.stoneComparatorId(color);
 
             futures.add(writeDustFromDyeRecipe(writer, color, dustId));
+            futures.add(writeVanillaDustFromColoredDustRecipe(writer, dustId));
             futures.add(writeBlockFromDustRecipe(writer, dustId, blockId));
             futures.add(writeDustFromBlockRecipe(writer, dustId, blockId));
             futures.add(writeTorchFromDustRecipe(writer, dustId, torchId));
-            futures.add(writeColoredRepeaterRecipe(writer, color, repeaterId));
-            futures.add(writeColoredComparatorRecipe(writer, color, comparatorId));
+            futures.add(writeColoredRepeaterRecipe(writer, torchId, repeaterId));
+            futures.add(writeColoredComparatorRecipe(writer, torchId, comparatorId));
         }
 
         return CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
@@ -52,21 +53,48 @@ public class ColorfulRedstoneRecipeProvider implements DataProvider {
         String recipeName = dustId + "_from_redstone_and_" + color.getName() + "_dye";
 
         JsonObject recipe = new JsonObject();
+        recipe.addProperty("type", "minecraft:crafting_shaped");
+        recipe.addProperty("category", "redstone");
+
+        JsonArray pattern = new JsonArray();
+        pattern.add("RRR");
+        pattern.add("RXR");
+        pattern.add("RRR");
+        recipe.add("pattern", pattern);
+
+        JsonObject key = new JsonObject();
+        JsonObject redstone = new JsonObject();
+        redstone.addProperty("item", "minecraft:redstone");
+        key.add("R", redstone);
+
+        JsonObject dye = new JsonObject();
+        dye.addProperty("item", toDyeItemId(color));
+        key.add("X", dye);
+        recipe.add("key", key);
+
+        JsonObject result = new JsonObject();
+        result.addProperty("id", ColorfulRedstone.MOD_ID + ":" + dustId);
+        result.addProperty("count", 8);
+        recipe.add("result", result);
+
+        return DataProvider.saveStable(writer, recipe, recipes.json(ColorfulRedstone.id(recipeName)));
+    }
+
+    private CompletableFuture<?> writeVanillaDustFromColoredDustRecipe(CachedOutput writer, String dustId) {
+        String recipeName = "redstone_from_" + dustId;
+
+        JsonObject recipe = new JsonObject();
         recipe.addProperty("type", "minecraft:crafting_shapeless");
         recipe.addProperty("category", "redstone");
 
         JsonArray ingredients = new JsonArray();
-        JsonObject redstone = new JsonObject();
-        redstone.addProperty("item", "minecraft:redstone");
-        ingredients.add(redstone);
-
-        JsonObject dye = new JsonObject();
-        dye.addProperty("item", toDyeItemId(color));
-        ingredients.add(dye);
+        JsonObject coloredDust = new JsonObject();
+        coloredDust.addProperty("item", ColorfulRedstone.MOD_ID + ":" + dustId);
+        ingredients.add(coloredDust);
         recipe.add("ingredients", ingredients);
 
         JsonObject result = new JsonObject();
-        result.addProperty("id", ColorfulRedstone.MOD_ID + ":" + dustId);
+        result.addProperty("id", "minecraft:redstone");
         result.addProperty("count", 1);
         recipe.add("result", result);
 
@@ -129,14 +157,14 @@ public class ColorfulRedstoneRecipeProvider implements DataProvider {
         recipe.addProperty("category", "redstone");
 
         JsonArray pattern = new JsonArray();
-        pattern.add("X");
+        pattern.add("R");
         pattern.add("#");
         recipe.add("pattern", pattern);
 
         JsonObject key = new JsonObject();
-        JsonObject x = new JsonObject();
-        x.addProperty("item", ColorfulRedstone.MOD_ID + ":" + dustId);
-        key.add("X", x);
+        JsonObject r = new JsonObject();
+        r.addProperty("item", ColorfulRedstone.MOD_ID + ":" + dustId);
+        key.add("R", r);
 
         JsonObject hash = new JsonObject();
         hash.addProperty("item", "minecraft:stick");
@@ -151,22 +179,33 @@ public class ColorfulRedstoneRecipeProvider implements DataProvider {
         return DataProvider.saveStable(writer, recipe, recipes.json(ColorfulRedstone.id(recipeName)));
     }
 
-    private CompletableFuture<?> writeColoredRepeaterRecipe(CachedOutput writer, DyeColor color, String repeaterId) {
-        String recipeName = repeaterId + "_from_repeater_and_" + color.getName() + "_dye";
+    private CompletableFuture<?> writeColoredRepeaterRecipe(CachedOutput writer, String torchId, String repeaterId) {
+        String recipeName = repeaterId + "_from_vanilla_shaped";
 
         JsonObject recipe = new JsonObject();
-        recipe.addProperty("type", "minecraft:crafting_shapeless");
+        recipe.addProperty("type", "minecraft:crafting_shaped");
         recipe.addProperty("category", "redstone");
 
-        JsonArray ingredients = new JsonArray();
-        JsonObject repeater = new JsonObject();
-        repeater.addProperty("item", "minecraft:repeater");
-        ingredients.add(repeater);
+        JsonArray pattern = new JsonArray();
+        pattern.add("   ");
+        pattern.add("TRT");
+        pattern.add("SSS");
+        recipe.add("pattern", pattern);
 
-        JsonObject dye = new JsonObject();
-        dye.addProperty("item", toDyeItemId(color));
-        ingredients.add(dye);
-        recipe.add("ingredients", ingredients);
+        JsonObject key = new JsonObject();
+        JsonObject t = new JsonObject();
+        t.addProperty("item", ColorfulRedstone.MOD_ID + ":" + torchId);
+        key.add("T", t);
+
+        JsonObject r = new JsonObject();
+        r.addProperty("item", "minecraft:redstone");
+        key.add("R", r);
+
+        JsonObject s = new JsonObject();
+        s.addProperty("item", "minecraft:stone");
+        key.add("S", s);
+
+        recipe.add("key", key);
 
         JsonObject result = new JsonObject();
         result.addProperty("id", ColorfulRedstone.MOD_ID + ":" + repeaterId);
@@ -176,22 +215,33 @@ public class ColorfulRedstoneRecipeProvider implements DataProvider {
         return DataProvider.saveStable(writer, recipe, recipes.json(ColorfulRedstone.id(recipeName)));
     }
 
-    private CompletableFuture<?> writeColoredComparatorRecipe(CachedOutput writer, DyeColor color, String comparatorId) {
-        String recipeName = comparatorId + "_from_comparator_and_" + color.getName() + "_dye";
+    private CompletableFuture<?> writeColoredComparatorRecipe(CachedOutput writer, String torchId, String comparatorId) {
+        String recipeName = comparatorId + "_from_vanilla_shaped";
 
         JsonObject recipe = new JsonObject();
-        recipe.addProperty("type", "minecraft:crafting_shapeless");
+        recipe.addProperty("type", "minecraft:crafting_shaped");
         recipe.addProperty("category", "redstone");
 
-        JsonArray ingredients = new JsonArray();
-        JsonObject comparator = new JsonObject();
-        comparator.addProperty("item", "minecraft:comparator");
-        ingredients.add(comparator);
+        JsonArray pattern = new JsonArray();
+        pattern.add(" T ");
+        pattern.add("TQT");
+        pattern.add("SSS");
+        recipe.add("pattern", pattern);
 
-        JsonObject dye = new JsonObject();
-        dye.addProperty("item", toDyeItemId(color));
-        ingredients.add(dye);
-        recipe.add("ingredients", ingredients);
+        JsonObject key = new JsonObject();
+        JsonObject t = new JsonObject();
+        t.addProperty("item", ColorfulRedstone.MOD_ID + ":" + torchId);
+        key.add("T", t);
+
+        JsonObject q = new JsonObject();
+        q.addProperty("item", "minecraft:quartz");
+        key.add("Q", q);
+
+        JsonObject s = new JsonObject();
+        s.addProperty("item", "minecraft:stone");
+        key.add("S", s);
+
+        recipe.add("key", key);
 
         JsonObject result = new JsonObject();
         result.addProperty("id", ColorfulRedstone.MOD_ID + ":" + comparatorId);
@@ -205,4 +255,6 @@ public class ColorfulRedstoneRecipeProvider implements DataProvider {
         return "minecraft:" + color.getName() + "_dye";
     }
 }
+
+
 

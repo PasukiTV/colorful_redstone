@@ -5,12 +5,12 @@
     "#": {
       "item": "minecraft:stick"
     },
-    "X": {
+    "R": {
       "item": "colorful_redstone:light_graystone_dust"
     }
   },
   "pattern": [
-    "X",
+    "R",
     "#"
   ],
   "result": {

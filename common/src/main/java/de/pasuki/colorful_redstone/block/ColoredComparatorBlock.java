@@ -4,7 +4,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.SignalGetter;
 import net.minecraft.world.level.block.ComparatorBlock;
@@ -22,16 +21,6 @@ public class ColoredComparatorBlock extends ComparatorBlock {
 
     public DyeColor getColor() {
         return color;
-    }
-
-    @Override
-    public int getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
-        return super.getSignal(state, level, pos, direction);
-    }
-
-    @Override
-    public int getDirectSignal(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
-        return super.getDirectSignal(state, level, pos, direction);
     }
 
     @Override

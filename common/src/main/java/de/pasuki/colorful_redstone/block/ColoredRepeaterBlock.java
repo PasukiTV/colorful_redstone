@@ -5,7 +5,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.SignalGetter;
 import net.minecraft.world.level.block.RedStoneWireBlock;
@@ -18,24 +17,16 @@ public class ColoredRepeaterBlock extends RepeaterBlock {
     private static final float PARTICLE_CHANCE = 0.2F;
 
     private final DyeColor color;
+    private final DustParticleOptions poweredParticle;
 
     public ColoredRepeaterBlock(DyeColor color, BlockBehaviour.Properties properties) {
         super(properties);
         this.color = color;
+        this.poweredParticle = createParticle(color);
     }
 
     public DyeColor getColor() {
         return color;
-    }
-
-    @Override
-    public int getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
-        return super.getSignal(state, level, pos, direction);
-    }
-
-    @Override
-    public int getDirectSignal(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
-        return super.getDirectSignal(state, level, pos, direction);
     }
 
     @Override
@@ -69,11 +60,9 @@ public class ColoredRepeaterBlock extends RepeaterBlock {
             return;
         }
 
-        DustParticleOptions particle = createParticle();
         Direction facing = state.getValue(FACING);
-
         double xOffset = random.nextBoolean() ? -0.12D : 0.12D;
-        spawnRelative(level, pos, facing, random, particle, xOffset, -0.10D, 0.18D);
+        spawnRelative(level, pos, facing, random, poweredParticle, xOffset, -0.10D, 0.18D);
     }
 
     private int getSideSignal(SignalGetter level, BlockPos sidePos, Direction towardSide) {
@@ -91,7 +80,7 @@ public class ColoredRepeaterBlock extends RepeaterBlock {
         return signal;
     }
 
-    private DustParticleOptions createParticle() {
+    private static DustParticleOptions createParticle(DyeColor color) {
         int rgb = color.getTextColor();
         float red = Math.max(0.2F, ((rgb >> 16) & 255) / 255.0F);
         float green = Math.max(0.2F, ((rgb >> 8) & 255) / 255.0F);

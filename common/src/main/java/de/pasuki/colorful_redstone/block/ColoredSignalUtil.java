@@ -10,6 +10,7 @@ import net.minecraft.world.level.block.RedstoneTorchBlock;
 import net.minecraft.world.level.block.RedstoneWallTorchBlock;
 import net.minecraft.world.level.block.RepeaterBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
 
 final class ColoredSignalUtil {
     private ColoredSignalUtil() {
@@ -44,6 +45,7 @@ final class ColoredSignalUtil {
 
     static boolean isAnyRedstoneComponent(BlockState state) {
         return state.getBlock() instanceof RedStoneWireBlock
+                || state.is(Blocks.REDSTONE_BLOCK)
                 || state.getBlock() instanceof RedstoneTorchBlock
                 || state.getBlock() instanceof RedstoneWallTorchBlock
                 || state.getBlock() instanceof RepeaterBlock
