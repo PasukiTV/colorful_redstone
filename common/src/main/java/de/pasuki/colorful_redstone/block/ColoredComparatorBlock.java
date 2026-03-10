@@ -2,6 +2,7 @@ package de.pasuki.colorful_redstone.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -56,6 +57,11 @@ public class ColoredComparatorBlock extends ComparatorBlock {
         int leftSignal = getSideSignal(level, pos.relative(left), left);
         int rightSignal = getSideSignal(level, pos.relative(right), right);
         return Math.max(leftSignal, rightSignal);
+    }
+
+    @Override
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
+        // Vanilla comparator does not emit redstone dust particles.
     }
 
     private int getSideSignal(SignalGetter level, BlockPos sidePos, Direction towardSide) {

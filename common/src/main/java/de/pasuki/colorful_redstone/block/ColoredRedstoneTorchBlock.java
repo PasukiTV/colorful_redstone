@@ -14,6 +14,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.joml.Vector3f;
 
 public class ColoredRedstoneTorchBlock extends RedstoneTorchBlock {
+    private static final float PARTICLE_CHANCE = 0.2F;
+
     private final DyeColor color;
 
     public ColoredRedstoneTorchBlock(DyeColor color, BlockBehaviour.Properties properties) {
@@ -45,7 +47,7 @@ public class ColoredRedstoneTorchBlock extends RedstoneTorchBlock {
 
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
-        if (!state.getValue(LIT)) {
+        if (!state.getValue(LIT) || random.nextFloat() >= PARTICLE_CHANCE) {
             return;
         }
 

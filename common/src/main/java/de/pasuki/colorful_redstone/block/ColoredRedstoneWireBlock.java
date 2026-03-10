@@ -14,6 +14,9 @@ import net.minecraft.world.level.block.state.properties.RedstoneSide;
 import org.joml.Vector3f;
 
 public class ColoredRedstoneWireBlock extends RedStoneWireBlock {
+    private static final float CENTER_PARTICLE_CHANCE = 0.1F;
+    private static final float SIDE_PARTICLE_CHANCE = 0.1F;
+
     private final DyeColor color;
 
     public ColoredRedstoneWireBlock(DyeColor color, BlockBehaviour.Properties properties) {
@@ -58,7 +61,7 @@ public class ColoredRedstoneWireBlock extends RedStoneWireBlock {
         double centerY = pos.getY() + 0.0625D;
         double centerZ = pos.getZ() + 0.5D;
 
-        if (random.nextFloat() < 0.35F) {
+        if (random.nextFloat() < CENTER_PARTICLE_CHANCE) {
             level.addParticle(particle,
                     centerX + (random.nextDouble() - 0.5D) * 0.2D,
                     centerY,
@@ -68,7 +71,7 @@ public class ColoredRedstoneWireBlock extends RedStoneWireBlock {
 
         for (Direction direction : Direction.Plane.HORIZONTAL) {
             RedstoneSide side = state.getValue(PROPERTY_BY_DIRECTION.get(direction));
-            if (!side.isConnected() || random.nextFloat() >= 0.35F) {
+            if (!side.isConnected() || random.nextFloat() >= SIDE_PARTICLE_CHANCE) {
                 continue;
             }
 
