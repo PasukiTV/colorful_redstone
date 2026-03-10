@@ -6,7 +6,7 @@ license = "Insert License Here"
 [[mods]]
 modId = "colorful_redstone"
 version = "${version}"
-displayName = "colorful_redstone"
+displayName = "Colorful Redstone"
 authors = "Me!"
 description = '''
 This is an example description! Tell everyone what your mod is about!
@@ -36,3 +36,4 @@ side = "BOTH"
 
 [[mixins]]
 config = "colorful_redstone.mixins.json"
+
