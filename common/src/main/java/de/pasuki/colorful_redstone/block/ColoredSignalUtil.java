@@ -4,13 +4,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ComparatorBlock;
 import net.minecraft.world.level.block.RedStoneWireBlock;
 import net.minecraft.world.level.block.RedstoneTorchBlock;
 import net.minecraft.world.level.block.RedstoneWallTorchBlock;
 import net.minecraft.world.level.block.RepeaterBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
 
 final class ColoredSignalUtil {
     private ColoredSignalUtil() {
@@ -18,7 +18,15 @@ final class ColoredSignalUtil {
 
     static boolean canPowerTarget(BlockGetter level, BlockPos sourcePos, Direction direction, DyeColor color) {
         BlockPos targetPos = sourcePos.relative(direction);
-        return isSameColorComponent(level.getBlockState(targetPos), color);
+        BlockState targetState = level.getBlockState(targetPos);
+
+        // Non-redstone targets (piston, dispenser, observer, etc.) should be powered normally.
+        if (!isAnyRedstoneComponent(targetState)) {
+            return true;
+        }
+
+        // Redstone components are color-gated.
+        return isSameColorComponent(targetState, color);
     }
 
     static boolean isSameColorComponent(BlockState state, DyeColor color) {
