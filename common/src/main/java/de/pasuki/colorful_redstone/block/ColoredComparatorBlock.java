@@ -29,8 +29,7 @@ public class ColoredComparatorBlock extends ComparatorBlock {
         BlockPos inputPos = pos.relative(inputDirection);
         BlockState inputState = level.getBlockState(inputPos);
 
-        if (ColoredSignalUtil.isAnyRedstoneComponent(inputState)
-                && !ColoredSignalUtil.isSameColorComponent(inputState, color)) {
+        if (ColoredSignalUtil.isDifferentColoredComponent(inputState, color)) {
             return 0;
         }
 
@@ -56,8 +55,7 @@ public class ColoredComparatorBlock extends ComparatorBlock {
     private int getSideSignal(SignalGetter level, BlockPos sidePos, Direction towardSide) {
         BlockState sideState = level.getBlockState(sidePos);
 
-        if (ColoredSignalUtil.isAnyRedstoneComponent(sideState)
-                && !ColoredSignalUtil.isSameColorComponent(sideState, color)) {
+        if (ColoredSignalUtil.isDifferentColoredComponent(sideState, color)) {
             return 0;
         }
 

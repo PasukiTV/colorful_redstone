@@ -66,73 +66,42 @@ public abstract class RedStoneWireBlockMixin {
         BlockState neighbor = level.getBlockState(neighborPos);
         Object self = this;
 
-        if (self instanceof ColoredRedstoneWireBlock currentColoredWire) {
-            if (neighbor.getBlock() instanceof RedStoneWireBlock && !(neighbor.getBlock() instanceof ColoredRedstoneWireBlock)) {
-                cir.setReturnValue(RedstoneSide.NONE);
-                return;
-            }
+        if (!(self instanceof ColoredRedstoneWireBlock currentColoredWire)) {
+            return;
+        }
 
-            if (neighbor.getBlock() instanceof ColoredRedstoneWireBlock neighborColoredWire) {
-                if (neighborColoredWire.getColor() != currentColoredWire.getColor()) {
-                    cir.setReturnValue(RedstoneSide.NONE);
-                }
-                return;
+        if (neighbor.getBlock() instanceof ColoredRedstoneWireBlock neighborColoredWire) {
+            if (neighborColoredWire.getColor() != currentColoredWire.getColor()) {
+                cir.setReturnValue(RedstoneSide.NONE);
             }
+            return;
+        }
 
-            if (neighbor.getBlock() instanceof RedstoneTorchBlock && !(neighbor.getBlock() instanceof ColoredRedstoneTorchBlock)) {
-                cir.setReturnValue(RedstoneSide.NONE);
-                return;
-            }
-            if (neighbor.getBlock() instanceof RedstoneWallTorchBlock && !(neighbor.getBlock() instanceof ColoredRedstoneWallTorchBlock)) {
-                cir.setReturnValue(RedstoneSide.NONE);
-                return;
-            }
-            if (neighbor.getBlock() instanceof ColoredRedstoneTorchBlock coloredTorch
-                    && coloredTorch.getColor() != currentColoredWire.getColor()) {
-                cir.setReturnValue(RedstoneSide.NONE);
-                return;
-            }
-            if (neighbor.getBlock() instanceof ColoredRedstoneWallTorchBlock coloredWallTorch
-                    && coloredWallTorch.getColor() != currentColoredWire.getColor()) {
-                cir.setReturnValue(RedstoneSide.NONE);
-                return;
-            }
+        if (neighbor.getBlock() instanceof ColoredRedstoneTorchBlock coloredTorch
+                && coloredTorch.getColor() != currentColoredWire.getColor()) {
+            cir.setReturnValue(RedstoneSide.NONE);
+            return;
+        }
+        if (neighbor.getBlock() instanceof ColoredRedstoneWallTorchBlock coloredWallTorch
+                && coloredWallTorch.getColor() != currentColoredWire.getColor()) {
+            cir.setReturnValue(RedstoneSide.NONE);
+            return;
+        }
 
-            if (neighbor.getBlock() instanceof RepeaterBlock && !(neighbor.getBlock() instanceof ColoredRepeaterBlock)) {
-                cir.setReturnValue(RedstoneSide.NONE);
-                return;
-            }
-            if (neighbor.getBlock() instanceof ComparatorBlock && !(neighbor.getBlock() instanceof ColoredComparatorBlock)) {
-                cir.setReturnValue(RedstoneSide.NONE);
-                return;
-            }
-            if (neighbor.getBlock() instanceof ColoredRepeaterBlock coloredRepeater
-                    && coloredRepeater.getColor() != currentColoredWire.getColor()) {
-                cir.setReturnValue(RedstoneSide.NONE);
-                return;
-            }
-            if (neighbor.getBlock() instanceof ColoredComparatorBlock coloredComparator
-                    && coloredComparator.getColor() != currentColoredWire.getColor()) {
-                cir.setReturnValue(RedstoneSide.NONE);
-                return;
-            }
+        if (neighbor.getBlock() instanceof ColoredRepeaterBlock coloredRepeater
+                && coloredRepeater.getColor() != currentColoredWire.getColor()) {
+            cir.setReturnValue(RedstoneSide.NONE);
+            return;
+        }
+        if (neighbor.getBlock() instanceof ColoredComparatorBlock coloredComparator
+                && coloredComparator.getColor() != currentColoredWire.getColor()) {
+            cir.setReturnValue(RedstoneSide.NONE);
+            return;
+        }
 
-            if (neighbor.getBlock() instanceof ColoredRedstoneBlock coloredBlock) {
-                if (coloredBlock.getColor() != currentColoredWire.getColor()) {
-                    cir.setReturnValue(RedstoneSide.NONE);
-                    return;
-                }
-
-                if (canConnectUp && colorful_redstone$canClimb(neighbor, level, neighborPos)) {
-                    BlockState aboveNeighbor = level.getBlockState(neighborPos.above());
-                    if (aboveNeighbor.getBlock() instanceof ColoredRedstoneWireBlock upWire
-                            && upWire.getColor() == currentColoredWire.getColor()) {
-                        cir.setReturnValue(RedstoneSide.UP);
-                        return;
-                    }
-                }
-
-                cir.setReturnValue(RedstoneSide.SIDE);
+        if (neighbor.getBlock() instanceof ColoredRedstoneBlock coloredBlock) {
+            if (coloredBlock.getColor() != currentColoredWire.getColor()) {
+                cir.setReturnValue(RedstoneSide.NONE);
                 return;
             }
 
@@ -145,14 +114,16 @@ public abstract class RedStoneWireBlockMixin {
                 }
             }
 
+            cir.setReturnValue(RedstoneSide.SIDE);
             return;
         }
 
-        if (neighbor.getBlock() instanceof ColoredRedstoneWireBlock
-                || neighbor.getBlock() instanceof ColoredRepeaterBlock
-                || neighbor.getBlock() instanceof ColoredComparatorBlock
-                || neighbor.getBlock() instanceof ColoredRedstoneBlock) {
-            cir.setReturnValue(RedstoneSide.NONE);
+        if (canConnectUp && colorful_redstone$canClimb(neighbor, level, neighborPos)) {
+            BlockState aboveNeighbor = level.getBlockState(neighborPos.above());
+            if (aboveNeighbor.getBlock() instanceof ColoredRedstoneWireBlock upWire
+                    && upWire.getColor() == currentColoredWire.getColor()) {
+                cir.setReturnValue(RedstoneSide.UP);
+            }
         }
     }
 
@@ -170,40 +141,32 @@ public abstract class RedStoneWireBlockMixin {
                 BlockPos neighborPos = pos.relative(direction);
                 BlockState neighborState = level.getBlockState(neighborPos);
 
-                boolean isRedstoneComponent = neighborState.getBlock() instanceof RedStoneWireBlock
-                        || neighborState.getBlock() instanceof RedstoneTorchBlock
-                        || neighborState.getBlock() instanceof RedstoneWallTorchBlock
-                        || neighborState.getBlock() instanceof RepeaterBlock
-                        || neighborState.getBlock() instanceof ComparatorBlock
-                        || neighborState.getBlock() instanceof ColoredRedstoneBlock;
+                // Wires are handled in the wire-decay pass below, never as direct external power.
+                if (neighborState.getBlock() instanceof RedStoneWireBlock) {
+                    continue;
+                }
 
-                if (isRedstoneComponent) {
-                    if (neighborState.getBlock() instanceof ColoredRedstoneBlock coloredBlock) {
-                        if (coloredBlock.getColor() != currentColoredWire.getColor()) {
-                            continue;
-                        }
-                    } else if (neighborState.getBlock() instanceof ColoredRedstoneTorchBlock coloredTorch) {
-                        if (coloredTorch.getColor() != currentColoredWire.getColor()) {
-                            continue;
-                        }
-                    } else if (neighborState.getBlock() instanceof ColoredRedstoneWallTorchBlock coloredWallTorch) {
-                        if (coloredWallTorch.getColor() != currentColoredWire.getColor()) {
-                            continue;
-                        }
-                    } else if (neighborState.getBlock() instanceof ColoredRepeaterBlock coloredRepeater) {
-                        if (coloredRepeater.getColor() != currentColoredWire.getColor()
-                                || !shouldConnectTo(neighborState, direction)) {
-                            continue;
-                        }
-                    } else if (neighborState.getBlock() instanceof ColoredComparatorBlock coloredComparator) {
-                        if (coloredComparator.getColor() != currentColoredWire.getColor()
-                                || !shouldConnectTo(neighborState, direction)) {
-                            continue;
-                        }
-                    } else {
-                        // Vanilla redstone components are on a different channel.
-                        continue;
-                    }
+                if (neighborState.getBlock() instanceof ColoredRedstoneBlock coloredBlock
+                        && coloredBlock.getColor() != currentColoredWire.getColor()) {
+                    continue;
+                }
+                if (neighborState.getBlock() instanceof ColoredRedstoneTorchBlock coloredTorch
+                        && coloredTorch.getColor() != currentColoredWire.getColor()) {
+                    continue;
+                }
+                if (neighborState.getBlock() instanceof ColoredRedstoneWallTorchBlock coloredWallTorch
+                        && coloredWallTorch.getColor() != currentColoredWire.getColor()) {
+                    continue;
+                }
+                if (neighborState.getBlock() instanceof ColoredRepeaterBlock coloredRepeater
+                        && (coloredRepeater.getColor() != currentColoredWire.getColor()
+                        || !shouldConnectTo(neighborState, direction))) {
+                    continue;
+                }
+                if (neighborState.getBlock() instanceof ColoredComparatorBlock coloredComparator
+                        && (coloredComparator.getColor() != currentColoredWire.getColor()
+                        || !shouldConnectTo(neighborState, direction))) {
+                    continue;
                 }
 
                 int signal = level.getSignal(neighborPos, direction.getOpposite());
@@ -223,25 +186,31 @@ public abstract class RedStoneWireBlockMixin {
             BlockPos sidePos = pos.relative(direction);
             BlockState sideState = level.getBlockState(sidePos);
 
-            if (sideState.getBlock() instanceof ColoredRedstoneWireBlock sideWire
-                    && sideWire.getColor() == currentColoredWire.getColor()) {
-                maxWirePower = Math.max(maxWirePower, sideState.getValue(RedStoneWireBlock.POWER));
+            if (sideState.getBlock() instanceof RedStoneWireBlock) {
+                if (!(sideState.getBlock() instanceof ColoredRedstoneWireBlock sideWire)
+                        || sideWire.getColor() == currentColoredWire.getColor()) {
+                    maxWirePower = Math.max(maxWirePower, sideState.getValue(RedStoneWireBlock.POWER));
+                }
             }
 
             boolean sideCanClimb = colorful_redstone$canClimb(sideState, level, sidePos);
             if (sideCanClimb && !aboveBlocksUpPath) {
                 BlockPos upPos = sidePos.above();
                 BlockState upState = level.getBlockState(upPos);
-                if (upState.getBlock() instanceof ColoredRedstoneWireBlock upWire
-                        && upWire.getColor() == currentColoredWire.getColor()) {
-                    maxWirePower = Math.max(maxWirePower, upState.getValue(RedStoneWireBlock.POWER));
+                if (upState.getBlock() instanceof RedStoneWireBlock) {
+                    if (!(upState.getBlock() instanceof ColoredRedstoneWireBlock upWire)
+                            || upWire.getColor() == currentColoredWire.getColor()) {
+                        maxWirePower = Math.max(maxWirePower, upState.getValue(RedStoneWireBlock.POWER));
+                    }
                 }
             } else if (!sideCanClimb) {
                 BlockPos downPos = sidePos.below();
                 BlockState downState = level.getBlockState(downPos);
-                if (downState.getBlock() instanceof ColoredRedstoneWireBlock downWire
-                        && downWire.getColor() == currentColoredWire.getColor()) {
-                    maxWirePower = Math.max(maxWirePower, downState.getValue(RedStoneWireBlock.POWER));
+                if (downState.getBlock() instanceof RedStoneWireBlock) {
+                    if (!(downState.getBlock() instanceof ColoredRedstoneWireBlock downWire)
+                            || downWire.getColor() == currentColoredWire.getColor()) {
+                        maxWirePower = Math.max(maxWirePower, downState.getValue(RedStoneWireBlock.POWER));
+                    }
                 }
             }
         }

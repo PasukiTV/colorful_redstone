@@ -6,6 +6,7 @@ import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.util.FastColor;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RedStoneWireBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -41,6 +42,24 @@ public class ColoredRedstoneWireBlock extends RedStoneWireBlock {
     public int getRenderColor(int power) {
         int clampedPower = Math.max(0, Math.min(15, power));
         return renderColors[clampedPower];
+    }
+
+    @Override
+    public int getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+        int base = super.getSignal(state, level, pos, direction);
+        if (base <= 0 || direction == null) {
+            return base;
+        }
+        return ColoredSignalUtil.canPowerTarget(level, pos, direction.getOpposite(), color) ? base : 0;
+    }
+
+    @Override
+    public int getDirectSignal(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+        int base = super.getDirectSignal(state, level, pos, direction);
+        if (base <= 0 || direction == null) {
+            return base;
+        }
+        return ColoredSignalUtil.canPowerTarget(level, pos, direction.getOpposite(), color) ? base : 0;
     }
 
     @Override

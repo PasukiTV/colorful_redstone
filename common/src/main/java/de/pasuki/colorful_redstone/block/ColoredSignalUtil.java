@@ -25,7 +25,12 @@ final class ColoredSignalUtil {
             return true;
         }
 
-        // Redstone components are color-gated.
+        // Vanilla redstone is the universal bridge until converter blocks exist.
+        if (isVanillaRedstoneComponent(targetState)) {
+            return true;
+        }
+
+        // Colored redstone remains color-gated against other colored channels.
         return isSameColorComponent(targetState, color);
     }
 
@@ -59,5 +64,36 @@ final class ColoredSignalUtil {
                 || state.getBlock() instanceof RepeaterBlock
                 || state.getBlock() instanceof ComparatorBlock
                 || state.getBlock() instanceof ColoredRedstoneBlock;
+    }
+
+    static boolean isVanillaRedstoneComponent(BlockState state) {
+        return (state.getBlock() instanceof RedStoneWireBlock && !(state.getBlock() instanceof ColoredRedstoneWireBlock))
+                || state.is(Blocks.REDSTONE_BLOCK)
+                || (state.getBlock() instanceof RedstoneTorchBlock && !(state.getBlock() instanceof ColoredRedstoneTorchBlock))
+                || (state.getBlock() instanceof RedstoneWallTorchBlock && !(state.getBlock() instanceof ColoredRedstoneWallTorchBlock))
+                || (state.getBlock() instanceof RepeaterBlock && !(state.getBlock() instanceof ColoredRepeaterBlock))
+                || (state.getBlock() instanceof ComparatorBlock && !(state.getBlock() instanceof ColoredComparatorBlock));
+    }
+
+    static boolean isDifferentColoredComponent(BlockState state, DyeColor color) {
+        if (state.getBlock() instanceof ColoredRedstoneWireBlock wire) {
+            return wire.getColor() != color;
+        }
+        if (state.getBlock() instanceof ColoredRedstoneTorchBlock torch) {
+            return torch.getColor() != color;
+        }
+        if (state.getBlock() instanceof ColoredRedstoneWallTorchBlock wallTorch) {
+            return wallTorch.getColor() != color;
+        }
+        if (state.getBlock() instanceof ColoredRedstoneBlock block) {
+            return block.getColor() != color;
+        }
+        if (state.getBlock() instanceof ColoredRepeaterBlock repeater) {
+            return repeater.getColor() != color;
+        }
+        if (state.getBlock() instanceof ColoredComparatorBlock comparator) {
+            return comparator.getColor() != color;
+        }
+        return false;
     }
 }
